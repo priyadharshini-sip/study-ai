@@ -289,12 +289,50 @@ const UploadModule = (() => {
     } catch (err) {
       document.getElementById('processing-overlay').hidden = true;
       hideProgress();
+      console.error('[StudyAI] Document processing error:', err);
 
-      if (err.message === 'API_KEY_MISSING') {
-        Helpers.toast('Please set your API key first.', 'error');
+      const msg = err.message || '';
+
+      if (msg === 'API_KEY_MISSING') {
+        Helpers.toast('⚠️ Please set your API key first.', 'warning');
+
+      } else if (msg.startsWith('QUOTA_EXHAUSTED')) {
+        // OpenAI billing quota exhausted — offer to switch to Gemini
+        const provider = ApiService.getProvider();
+        if (provider === 'openai') {
+          // Show a persistent error with a switch button
+          const container = document.getElementById('toast-container') || document.body;
+          const toastEl = document.createElement('div');
+          toastEl.className = 'toast toast-error';
+          toastEl.style.cssText = 'max-width:380px;padding:var(--sp-4);';
+          toastEl.innerHTML = `
+            <span style="font-size:1.2rem">💳</span>
+            <div style="flex:1">
+              <div style="font-weight:700;margin-bottom:4px">OpenAI quota exceeded</div>
+              <div style="font-size:var(--text-xs);opacity:0.85;margin-bottom:8px">Your OpenAI account has no credits. Add billing at <a href="https://platform.openai.com/settings/billing" target="_blank" style="color:#93c5fd">OpenAI Platform</a> — or use Gemini for free.</div>
+              <button onclick="UploadModule.switchToGemini()" style="background:linear-gradient(135deg,#7c3aed,#3b82f6);color:#fff;border:none;border-radius:8px;padding:6px 14px;cursor:pointer;font-size:12px;font-weight:700;">✨ Switch to Gemini (Free)</button>
+            </div>
+            <button onclick="this.closest('.toast').remove()" style="background:none;border:none;color:inherit;cursor:pointer;font-size:1.2rem;opacity:0.7;padding:0 4px;">✕</button>
+          `;
+          container.appendChild(toastEl);
+          setTimeout(() => toastEl.remove(), 15000);
+        } else {
+          Helpers.toast('💳 Quota exceeded. Check your billing at Google Cloud Console.', 'error', 8000);
+        }
+
+      } else if (msg.startsWith('RATE_LIMITED')) {
+        Helpers.toast('⏳ Rate limited — wait 30 seconds then try again.', 'warning', 6000);
+
+      } else if (msg.startsWith('INVALID_KEY')) {
+        Helpers.toast('🔑 Invalid API key. Go to Upload Doc and re-enter your key.', 'error', 7000);
+        ApiService.clearApiKey();
+        render();
+
+      } else if (msg.startsWith('NETWORK_ERROR')) {
+        Helpers.toast('🌐 Network error — check your internet connection and try again.', 'error', 6000);
+
       } else {
-        Helpers.toast('Failed to process document: ' + err.message, 'error');
-        console.error(err);
+        Helpers.toast('❌ Failed to process document: ' + msg.split('(')[0].trim(), 'error', 8000);
       }
     }
   }
@@ -373,8 +411,19 @@ const UploadModule = (() => {
 
   function switchProvider(provider) {
     ApiService.setProvider(provider);
-    render(); // Re-render to show correct key state & placeholder
+    render();
   }
 
-  return { render, subscribe, deleteDoc, loadSampleData, switchProvider };
+  function switchToGemini() {
+    // Remove all existing toasts
+    document.querySelectorAll('.toast').forEach(t => t.remove());
+    // Switch to Gemini
+    ApiService.setProvider('gemini');
+    render();
+    Helpers.toast('✨ Switched to Google Gemini (free). Enter your Gemini API key below.', 'info', 6000);
+    // Focus the key input
+    setTimeout(() => document.getElementById('api-key-input')?.focus(), 300);
+  }
+
+  return { render, subscribe, deleteDoc, loadSampleData, switchProvider, switchToGemini };
 })();

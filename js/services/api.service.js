@@ -26,8 +26,8 @@ const ApiService = (() => {
             label: 'Google Gemini (1.5 Flash)',
             keyPrefix: 'AIza',
             keyHint: 'AIza...',
-            endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
-            model: 'gemini-1.5-flash',
+            endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent',
+            model: 'gemini-1.5-flash-latest',
         }
     };
 
@@ -100,7 +100,14 @@ const ApiService = (() => {
         const apiMsg = data?.error?.message || data?.error?.code || data?.message || `HTTP ${status}`;
         if (status === 401) return `INVALID_KEY: ${providerName} API key is invalid or expired. (${apiMsg})`;
         if (status === 403) return `FORBIDDEN: ${providerName} API access forbidden. Check billing/plan. (${apiMsg})`;
-        if (status === 429) return `QUOTA_EXCEEDED: Rate limit hit. Wait a moment and retry. (${apiMsg})`;
+        if (status === 429) {
+            // Check if it's a billing quota issue (insufficient_quota) vs rate limit
+            const isQuotaExhausted = apiMsg.includes('quota') || apiMsg.includes('billing') || apiMsg.includes('insufficient_quota') || apiMsg.includes('current quota');
+            if (isQuotaExhausted) {
+                return `QUOTA_EXHAUSTED: Your ${providerName} account has no credits remaining. Add credits at ${providerName === 'OpenAI' ? 'https://platform.openai.com/settings/billing' : 'https://console.cloud.google.com/'} OR switch to Google Gemini (free). (${apiMsg})`;
+            }
+            return `RATE_LIMITED: Too many requests. Wait 30 seconds and try again. (${apiMsg})`;
+        }
         if (status === 404) return `NOT_FOUND: Model not found. (${apiMsg})`;
         if (status === 400) return `BAD_REQUEST: ${apiMsg}`;
         if (status === 500) return `SERVER_ERROR: ${providerName} server error. Try again. (${apiMsg})`;

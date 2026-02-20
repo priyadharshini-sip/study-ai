@@ -1,0 +1,414 @@
+/* ============================================================
+   POMODORO — Timer, Focus Lock, Cycle Rings, Session Summary
+   ============================================================ */
+
+/* ---------- POMODORO LAYOUT ---------- */
+.pomodoro-layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: var(--sp-6);
+    align-items: start;
+}
+
+@media (max-width: 900px) {
+    .pomodoro-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ---------- TIMER CARD ---------- */
+.pomodoro-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-2xl);
+    padding: var(--sp-10) var(--sp-8);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.pomodoro-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(124, 58, 237, 0.08) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+/* ---------- MODE SELECTOR ---------- */
+.pomo-mode-tabs {
+    display: inline-flex;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-full);
+    padding: 4px;
+    gap: 4px;
+    margin-bottom: var(--sp-8);
+}
+
+.pomo-mode-tab {
+    padding: var(--sp-2) var(--sp-4);
+    border-radius: var(--radius-full);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    transition: all var(--transition-base);
+    white-space: nowrap;
+}
+
+.pomo-mode-tab.active {
+    background: var(--grad-primary);
+    color: #fff;
+    box-shadow: 0 2px 10px rgba(124, 58, 237, 0.3);
+}
+
+/* ---------- SVG RING TIMER ---------- */
+.timer-ring-container {
+    position: relative;
+    width: 240px;
+    height: 240px;
+    margin: 0 auto var(--sp-8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.timer-svg {
+    position: absolute;
+    inset: 0;
+    transform: rotate(-90deg);
+    width: 100%;
+    height: 100%;
+}
+
+.timer-ring-bg {
+    fill: none;
+    stroke: var(--border-subtle);
+    stroke-width: 8;
+}
+
+.timer-ring-progress {
+    fill: none;
+    stroke: url(#timerGrad);
+    stroke-width: 8;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1s linear;
+}
+
+.timer-display {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--sp-1);
+}
+
+.timer-digits {
+    font-family: var(--font-display);
+    font-size: 3.5rem;
+    font-weight: 900;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    letter-spacing: -2px;
+    background: var(--grad-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.timer-mode-label {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* ---------- FOCUS LOCK INDICATOR ---------- */
+.focus-lock-ring {
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    animation: none;
+    transition: border-color var(--transition-base);
+}
+
+.timer-ring-container.focus-locked .focus-lock-ring {
+    border-color: rgba(124, 58, 237, 0.3);
+    animation: glowPulse 2s ease-in-out infinite;
+}
+
+/* ---------- TIMER CONTROLS ---------- */
+.pomo-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sp-4);
+    margin-bottom: var(--sp-6);
+}
+
+.pomo-btn-main {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--grad-primary);
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all var(--transition-spring);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+}
+
+.pomo-btn-main:hover {
+    transform: scale(1.08);
+    box-shadow: 0 8px 30px rgba(124, 58, 237, 0.5);
+}
+
+.pomo-btn-main:active {
+    transform: scale(0.95);
+}
+
+.pomo-btn-secondary {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid var(--border-default);
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    font-size: 1.25rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-base);
+}
+
+.pomo-btn-secondary:hover {
+    background: var(--bg-card-hover);
+    color: var(--text-primary);
+    transform: scale(1.05);
+}
+
+/* ---------- CYCLE DOTS ---------- */
+.cycle-dots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sp-2);
+    margin-bottom: var(--sp-2);
+}
+
+.cycle-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--border-default);
+    transition: all var(--transition-base);
+}
+
+.cycle-dot.completed {
+    background: var(--brand-purple);
+}
+
+.cycle-dot.current {
+    background: var(--brand-amber);
+    animation: pulse 1.5s ease-in-out infinite;
+    width: 14px;
+    border-radius: var(--radius-full);
+}
+
+.cycle-label {
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* ---------- FOCUS LOCK UI ---------- */
+.focus-lock-banner {
+    display: none;
+    align-items: center;
+    gap: var(--sp-3);
+    padding: var(--sp-3) var(--sp-5);
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(245, 158, 11, 0.08));
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: var(--radius-md);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--brand-red);
+    margin-top: var(--sp-4);
+    animation: fadeInUp 0.3s ease;
+}
+
+.focus-lock-banner.active {
+    display: flex;
+}
+
+.focus-lock-banner-icon {
+    font-size: 1.1rem;
+}
+
+/* ---------- SETTINGS PANEL ---------- */
+.pomo-settings {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    padding: var(--sp-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-4);
+}
+
+.pomo-settings-title {
+    font-weight: 700;
+    font-size: var(--text-base);
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+}
+
+.setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-3);
+}
+
+.setting-label-group {
+    flex: 1;
+}
+
+.setting-name {
+    font-size: var(--text-sm);
+    font-weight: 600;
+}
+
+.setting-desc {
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+    margin-top: 2px;
+}
+
+.setting-control {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+}
+
+.stepper-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-default);
+    background: var(--bg-elevated);
+    color: var(--text-primary);
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    font-weight: 700;
+}
+
+.stepper-btn:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--brand-purple);
+}
+
+.setting-value {
+    font-weight: 700;
+    min-width: 36px;
+    text-align: center;
+    font-size: var(--text-sm);
+}
+
+/* Toggle Switch */
+.toggle {
+    position: relative;
+    width: 40px;
+    height: 22px;
+    flex-shrink: 0;
+}
+
+.toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background: var(--border-default);
+    border-radius: var(--radius-full);
+    transition: all var(--transition-base);
+}
+
+.toggle-slider::before {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    left: 3px;
+    top: 3px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform var(--transition-base);
+}
+
+.toggle input:checked+.toggle-slider {
+    background: var(--brand-purple);
+}
+
+.toggle input:checked+.toggle-slider::before {
+    transform: translateX(18px);
+}
+
+/* ---------- SESSION SUMMARY ---------- */
+.session-summary {
+    background: var(--bg-card);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-radius: var(--radius-xl);
+    padding: var(--sp-6);
+    animation: bounceIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.session-summary-title {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 800;
+    color: var(--brand-emerald);
+    margin-bottom: var(--sp-4);
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+}
+
+.session-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-4);
+    text-align: center;
+}
+
+.session-stat-value {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.session-stat-label {
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+    font-weight: 500;
+    margin-top: 2px;
+}

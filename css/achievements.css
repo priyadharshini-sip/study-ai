@@ -1,0 +1,332 @@
+/* ============================================================
+   ACHIEVEMENTS — Modal, Badges, Rewards Grid
+   ============================================================ */
+
+/* ---------- ACHIEVEMENT MODAL ---------- */
+.achievement-modal {
+    background: linear-gradient(145deg, #1A2540, #141E30) !important;
+    border: 1px solid rgba(124, 58, 237, 0.3);
+}
+
+[data-theme="light"] .achievement-modal {
+    background: linear-gradient(145deg, #F7F9FF, #FFFFFF) !important;
+}
+
+.achievement-badge-large {
+    font-size: 5rem;
+    margin-bottom: var(--sp-4);
+    animation: bounceIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+    filter: drop-shadow(0 0 20px rgba(124, 58, 237, 0.4));
+}
+
+.achievement-modal-title {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 900;
+    background: var(--grad-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: var(--sp-2);
+}
+
+.achievement-modal-desc {
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    margin-bottom: var(--sp-4);
+    line-height: 1.6;
+}
+
+.achievement-xp-gained {
+    display: inline-block;
+    padding: var(--sp-2) var(--sp-5);
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(239, 68, 68, 0.1));
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: var(--radius-full);
+    color: var(--brand-amber);
+    font-weight: 800;
+    font-size: var(--text-lg);
+    margin-bottom: var(--sp-6);
+    animation: starPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s both;
+}
+
+/* ---------- ACHIEVEMENTS GRID ---------- */
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--sp-4);
+}
+
+.achievement-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    padding: var(--sp-6) var(--sp-5);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition-base);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--sp-3);
+}
+
+.achievement-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+}
+
+.achievement-card.unlocked {
+    border-color: rgba(124, 58, 237, 0.25);
+}
+
+.achievement-card.locked {
+    opacity: 0.5;
+    filter: grayscale(0.6);
+}
+
+.achievement-card.locked:hover {
+    transform: none;
+}
+
+.achievement-card.unlocked::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--grad-primary);
+}
+
+.achievement-card-badge {
+    font-size: 3rem;
+    filter: drop-shadow(0 4px 8px rgba(124, 58, 237, 0.3));
+}
+
+.achievement-card.locked .achievement-card-badge {
+    filter: grayscale(1);
+}
+
+.achievement-card-title {
+    font-weight: 700;
+    font-size: var(--text-sm);
+}
+
+.achievement-card-desc {
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.achievement-card-xp {
+    display: inline-block;
+    padding: 2px 10px;
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.25);
+    border-radius: var(--radius-full);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    color: var(--brand-amber);
+}
+
+.achievement-unlock-date {
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: var(--sp-1);
+}
+
+.achievement-locked-icon {
+    position: absolute;
+    bottom: var(--sp-3);
+    right: var(--sp-3);
+    font-size: 1rem;
+    opacity: 0.3;
+}
+
+/* ---------- POINTS & STREAKS LEADERBOARD ---------- */
+.leaderboard-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.leaderboard-header {
+    padding: var(--sp-4) var(--sp-5);
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(59, 130, 246, 0.05));
+    border-bottom: 1px solid var(--border-subtle);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+}
+
+.leaderboard-row {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    padding: var(--sp-3) var(--sp-5);
+    border-bottom: 1px solid var(--border-subtle);
+    transition: background var(--transition-fast);
+}
+
+.leaderboard-row:last-child {
+    border-bottom: none;
+}
+
+.leaderboard-row:hover {
+    background: var(--bg-card-hover);
+}
+
+.leaderboard-row.self {
+    background: rgba(124, 58, 237, 0.05);
+    border-left: 3px solid var(--brand-purple);
+}
+
+.lb-rank {
+    font-weight: 800;
+    font-size: var(--text-sm);
+    min-width: 28px;
+    color: var(--text-muted);
+}
+
+.lb-rank.top {
+    color: var(--brand-amber);
+}
+
+.lb-name {
+    flex: 1;
+    font-weight: 600;
+    font-size: var(--text-sm);
+}
+
+.lb-points {
+    font-weight: 700;
+    color: var(--brand-amber);
+    font-size: var(--text-sm);
+}
+
+.lb-streak {
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+}
+
+/* ---------- XP PROGRESS BAR FULL ---------- */
+.xp-progress-section {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    padding: var(--sp-6);
+}
+
+.xp-level-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--sp-4);
+}
+
+.xp-level-badge {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    padding: var(--sp-2) var(--sp-4);
+    background: var(--grad-primary);
+    border-radius: var(--radius-full);
+    color: #fff;
+    font-weight: 800;
+    font-size: var(--text-sm);
+}
+
+.xp-to-next {
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+}
+
+.xp-progress-bar-large {
+    height: 12px;
+    background: var(--border-subtle);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    margin-bottom: var(--sp-3);
+}
+
+.xp-fill-large {
+    height: 100%;
+    background: var(--grad-primary);
+    border-radius: var(--radius-full);
+    transition: width var(--transition-slow);
+    position: relative;
+}
+
+.xp-fill-large::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: progressShimmer 2s infinite;
+}
+
+/* ---------- REWARD ANIMATIONS ---------- */
+.reward-float {
+    position: fixed;
+    pointer-events: none;
+    z-index: 100;
+    font-size: 1.5rem;
+    animation: rewardFloat 2s ease-out forwards;
+}
+
+@keyframes rewardFloat {
+    0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+    60% {
+        opacity: 1;
+        transform: translateY(-80px) scale(1.2);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-140px) scale(0.8);
+    }
+}
+
+/* ---------- STREAK CARD ---------- */
+.streak-card {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.12), rgba(239, 68, 68, 0.08));
+    border: 1px solid rgba(245, 158, 11, 0.25);
+    border-radius: var(--radius-xl);
+    padding: var(--sp-6) var(--sp-8);
+    display: flex;
+    align-items: center;
+    gap: var(--sp-6);
+}
+
+.streak-card-fire {
+    font-size: 4rem;
+    animation: flamePulse 1.5s ease-in-out infinite;
+}
+
+.streak-card-num {
+    font-family: var(--font-display);
+    font-size: var(--text-5xl);
+    font-weight: 900;
+    color: var(--brand-amber);
+    line-height: 1;
+}
+
+.streak-card-label {
+    font-size: var(--text-base);
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.streak-card-best {
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    margin-top: var(--sp-1);
+}

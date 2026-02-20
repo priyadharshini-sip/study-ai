@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="StudyAI — AI-powered flashcards, quizzes, Pomodoro, streaks, and group study for smarter learning." />
+    <title>StudyAI — Learn Smarter with AI</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Core Styles -->
+    <link rel="stylesheet" href="css/design-system.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+    <link rel="stylesheet" href="css/flashcards.css" />
+    <link rel="stylesheet" href="css/quiz.css" />
+    <link rel="stylesheet" href="css/pomodoro.css" />
+    <link rel="stylesheet" href="css/achievements.css" />
+    <link rel="stylesheet" href="css/groups.css" />
+</head>
+
+<body>
+    <!-- ===== SIDEBAR NAV ===== -->
+    <nav id="sidebar" class="sidebar" role="navigation" aria-label="Main navigation">
+        <div class="sidebar-header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="40" height="40" rx="12" fill="url(#logoGrad)" />
+                        <path d="M12 20l6 6 10-12" stroke="white" stroke-width="3" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <defs>
+                            <linearGradient id="logoGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#7C3AED" />
+                                <stop offset="1" stop-color="#3B82F6" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <span class="logo-text">StudyAI</span>
+            </div>
+            <button id="sidebar-toggle" class="sidebar-toggle" aria-label="Toggle sidebar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="3" y1="12" x2="21" y2="12" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <line x1="3" y1="18" x2="21" y2="18" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Streak Badge -->
+        <div class="streak-badge" id="sidebar-streak">
+            <span class="streak-fire">🔥</span>
+            <div class="streak-info">
+                <span class="streak-count" id="streak-count-display">0</span>
+                <span class="streak-label">Day Streak</span>
+            </div>
+        </div>
+
+        <ul class="nav-list" role="list">
+            <li><a href="#" class="nav-item active" data-page="dashboard" id="nav-dashboard">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7" />
+                        <rect x="14" y="3" width="7" height="7" />
+                        <rect x="14" y="14" width="7" height="7" />
+                        <rect x="3" y="14" width="7" height="7" />
+                    </svg>
+                    <span>Dashboard</span>
+                </a></li>
+            <li><a href="#" class="nav-item" data-page="upload" id="nav-upload">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                        <polyline points="17 8 12 3 7 8" />
+                        <line x1="12" y1="3" x2="12" y2="15" />
+                    </svg>
+                    <span>Upload Doc</span>
+                </a></li>
+            <li><a href="#" class="nav-item" data-page="flashcards" id="nav-flashcards">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="5" width="20" height="14" rx="2" />
+                        <line x1="2" y1="10" x2="22" y2="10" />
+                    </svg>
+                    <span>Flashcards</span>
+                </a></li>
+            <li><a href="#" class="nav-item" data-page="quiz" id="nav-quiz">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3" />
+                        <line x1="12" y1="17" x2="12.01" y2="17" />
+                    </svg>
+                    <span>Quiz</span>
+                </a></li>
+            <li><a href="#" class="nav-item" data-page="pomodoro" id="nav-pomodoro">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                    <span>Pomodoro</span>
+                </a></li>
+            <li><a href="#" class="nav-item" data-page="progress" id="nav-progress">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="20" x2="18" y2="10" />
+                        <line x1="12" y1="20" x2="12" y2="4" />
+                        <line x1="6" y1="20" x2="6" y2="14" />
+                    </svg>
+                    <span>Progress</span>
+                </a></li>
+            <li><a href="#" class="nav-item" data-page="groups" id="nav-groups">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                        <path d="M23 21v-2a4 4 0 00-3-3.87" />
+                        <path d="M16 3.13a4 4 0 010 7.75" />
+                    </svg>
+                    <span>Groups</span>
+                </a></li>
+            <li><a href="#" class="nav-item" data-page="achievements" id="nav-achievements">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="8" r="6" />
+                        <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11" />
+                    </svg>
+                    <span>Achievements</span>
+                </a></li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle theme">
+                <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5" />
+                    <line x1="12" y1="1" x2="12" y2="3" />
+                    <line x1="12" y1="21" x2="12" y2="23" />
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                    <line x1="1" y1="12" x2="3" y2="12" />
+                    <line x1="21" y1="12" x2="23" y2="12" />
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                </svg>
+                <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+                </svg>
+                <span class="theme-label">Light Mode</span>
+            </button>
+            <div class="xp-display">
+                <div class="xp-label">⚡ <span id="total-xp">0</span> XP</div>
+                <div class="xp-bar-mini">
+                    <div id="xp-fill-mini" class="xp-fill-mini"></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main id="main-content" class="main-content" role="main">
+        <!-- Top Bar -->
+        <header class="top-bar">
+            <button id="mobile-menu-btn" class="mobile-menu-btn" aria-label="Open menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="3" y1="12" x2="21" y2="12" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <line x1="3" y1="18" x2="21" y2="18" />
+                </svg>
+            </button>
+            <h1 id="page-title" class="page-title">Dashboard</h1>
+            <div class="top-bar-actions">
+                <div class="points-display">
+                    <span class="points-icon">⭐</span>
+                    <span id="points-display">0 pts</span>
+                </div>
+                <div class="user-avatar" id="user-avatar" aria-label="User profile">S</div>
+            </div>
+        </header>
+
+        <!-- Page Sections -->
+        <div id="page-dashboard" class="page active" role="region" aria-label="Dashboard">
+            <!-- Injected by dashboard.module.js -->
+        </div>
+        <div id="page-upload" class="page" role="region" aria-label="Upload Document">
+            <!-- Injected by upload.module.js -->
+        </div>
+        <div id="page-flashcards" class="page" role="region" aria-label="Flashcards">
+            <!-- Injected by flashcards.module.js -->
+        </div>
+        <div id="page-quiz" class="page" role="region" aria-label="Quiz">
+            <!-- Injected by quiz.module.js -->
+        </div>
+        <div id="page-pomodoro" class="page" role="region" aria-label="Pomodoro Timer">
+            <!-- Injected by pomodoro.module.js -->
+        </div>
+        <div id="page-progress" class="page" role="region" aria-label="Progress Tracking">
+            <!-- Injected by progress.module.js -->
+        </div>
+        <div id="page-groups" class="page" role="region" aria-label="Group Study">
+            <!-- Injected by groups.module.js -->
+        </div>
+        <div id="page-achievements" class="page" role="region" aria-label="Achievements">
+            <!-- Injected by achievements.module.js -->
+        </div>
+    </main>
+
+    <!-- ===== GLOBAL MODALS ===== -->
+    <!-- Achievement Modal -->
+    <div id="achievement-modal" class="modal-overlay" role="dialog" aria-modal="true"
+        aria-labelledby="achievement-title" hidden>
+        <div class="modal achievement-modal">
+            <div class="achievement-burst" id="achievement-burst"></div>
+            <div class="achievement-badge-large" id="achievement-badge-icon">🏆</div>
+            <h2 id="achievement-title" class="achievement-modal-title">Achievement Unlocked!</h2>
+            <p id="achievement-desc" class="achievement-modal-desc">You're on fire!</p>
+            <div class="achievement-xp-gained" id="achievement-xp-gained">+50 XP</div>
+            <button id="achievement-close" class="btn btn-primary">Awesome! 🎉</button>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- Upload processing overlay -->
+    <div id="processing-overlay" class="processing-overlay" hidden>
+        <div class="processing-card">
+            <div class="processing-spinner"></div>
+            <h3 class="processing-title">AI is Processing Your Document</h3>
+            <p class="processing-sub" id="processing-sub">Analyzing content...</p>
+            <div class="processing-progress-bar">
+                <div id="processing-progress-fill" class="processing-progress-fill"></div>
+            </div>
+            <p class="processing-step" id="processing-step">Step 1 of 4</p>
+        </div>
+    </div>
+
+    <!-- Scripts: Utils → Services → State → Modules → App -->
+    <script src="js/utils/jaccard.js?v=2"></script>
+    <script src="js/utils/helpers.js?v=2"></script>
+    <script src="js/services/api.service.js?v=2"></script>
+    <script src="js/state/store.js?v=2"></script>
+    <script src="js/modules/dashboard.module.js?v=2"></script>
+    <script src="js/modules/upload.module.js?v=2"></script>
+    <script src="js/modules/flashcards.module.js?v=2"></script>
+    <script src="js/modules/quiz.module.js?v=2"></script>
+    <script src="js/modules/pomodoro.module.js?v=2"></script>
+    <script src="js/modules/progress.module.js?v=2"></script>
+    <script src="js/modules/groups.module.js?v=2"></script>
+    <script src="js/modules/achievements.module.js?v=2"></script>
+    <script src="js/app.js?v=2"></script>
+</body>
+
+</html>

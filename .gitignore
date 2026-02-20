@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Server logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+
+# Sensitive / env
+.env
+.env.local
+*.env
+
+# Package lock (optional - remove if you want to commit it)
+package-lock.json
